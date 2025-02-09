@@ -58,7 +58,7 @@ class User {
     }
 
     // Static Method to Sign Up
-    public static function signup($pdo, $user_name, $email, $password, $role = 'user') {
+    public static function signup($pdo, $user_name, $email, $password, $role ){
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
         $stmt = $pdo->prepare("INSERT INTO users (user_name, email, password, role, activated) VALUES (?, ?, ?, ?, 0)");
         return $stmt->execute([$user_name, $email, $hashedPassword, $role]);

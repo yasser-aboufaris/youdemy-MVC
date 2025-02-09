@@ -6,7 +6,7 @@ use App\Model\CategorieDAO;
 class CategorieController {
     // Display categories dashboard
     public static function categoriesDashboard() {
-        $categories = CategorieDAO::getAll();
+        $categories = Categorie::getAll();
         require_once 'app/views/categories/dashboard.php';
     }
 
@@ -21,43 +21,19 @@ class CategorieController {
             $name = $_POST['name'];
             $description = $_POST['description'];
             
-            $categorie = new Categorie();
+            $categorie = new Categorie($conn);
             $categorie->setName($name);
             $categorie->setDescription($description);
+            $categorie->insert();
             
-            CategorieDAO::create($categorie);
             $_SESSION['success'] = "Category created successfully";
             header('Location: index.php?action=categoriesDashboard');
         } catch (\Exception $e) {
             $_SESSION['error'] = "Error creating category: " . $e->getMessage();
-            require_once 'app/views/categories/create.php';
+            require_once 'app/views/categories/categoriesDashboard.php';
         }
     }
 
-    // Show edit form
-    public static function editForm() {
-        try {
-            $id = $_GET['id'];
-            $categories = CategorieDAO::getAll();
-            $category = null;
-            
-            foreach ($categories as $cat) {
-                if ($cat->getId() == $id) {
-                    $category = $cat;
-                    break;
-                }
-            }
-            
-            if (!$category) {
-                throw new \Exception('Category not found');
-            }
-            
-            require_once 'app/views/categories/edit.php';
-        } catch (\Exception $e) {
-            $_SESSION['error'] = $e->getMessage();
-            header('Location: index.php?action=categoriesDashboard');
-        }
-    }
 
     // Handle category update
     public static function update() {
