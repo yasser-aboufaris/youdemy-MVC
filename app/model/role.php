@@ -56,9 +56,7 @@ class Role {
         }
     }
 
-
-
-    
+    // Getters
     public function getId() {
         return $this->id_role;
     }
@@ -67,10 +65,7 @@ class Role {
         return $this->role_name;
     }
 
-
-
-
-
+    // Setters
     public function setId($id) {
         $this->id_role = $id;
         return $this;
